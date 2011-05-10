@@ -91,7 +91,8 @@ function InsertEvent($args) {
                     "'" . $args['form_prefcat']              . "', " .
                     "'" . $args['locationspec'] ."', "                               .
                     "1, " .
-                    "1, " .(int)$args['facility']. ",".(int)$args['billing_facility']." )"
+                    "1, " .(int)$args['facility']. ",".(int)$args['billing_facility'].
+                    (int)$args['form_room']." )"
                 );
 }
 //================================================================================================================
@@ -1168,8 +1169,20 @@ $classpati='';
       ?>
       <?php
       //END (CHEMED) IF ?>
-      </td>
+      
       </select>
+      </td>
+      <td><?php
+      // ===============================
+      // Room scheduling
+      // 
+      // 
+      // This will be where I include a dropbox to offer room selection ?>
+      	<?php
+		generate_form_field(array('data_type'=>1,'field_id'=>'room','list_id'=>'room',
+		'empty_title'=>'SKIP'), $row['pc_room']);
+		?>
+		</td>
     </tr>
 	<tr>
 		<td nowrap>
