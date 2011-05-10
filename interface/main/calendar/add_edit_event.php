@@ -1178,7 +1178,8 @@ $classpati='';
       // 
       // 
       // This will be where I include a dropbox to offer room selection ?>
-      	<?php
+      <?php
+	 // Add room information to appointment scheduling and calendar
 		generate_form_field(array('data_type'=>1,'field_id'=>'room','list_id'=>'room',
 		'empty_title'=>'SKIP'), $row['pc_room']);
 		?>
