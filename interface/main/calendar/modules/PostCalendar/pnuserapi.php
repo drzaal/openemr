@@ -743,7 +743,8 @@ function &postcalendar_userapi_pcQueryEventsFA($args)	{
   // link to the events tables
   $table      =  $pntable['postcalendar_events'];
   $cattable   =  $pntable['postcalendar_categories'];
-
+  
+  // adding room to sql statement *ztonia
   $sql = "SELECT DISTINCT a.pc_eid,  a.pc_informant, a.pc_catid, a.pc_title, " .
     "a.pc_time, a.pc_hometext, a.pc_eventDate, a.pc_duration, a.pc_endDate, " .
     "a.pc_startTime, a.pc_recurrtype, a.pc_recurrfreq, a.pc_recurrspec, " .
@@ -754,11 +755,13 @@ function &postcalendar_userapi_pcQueryEventsFA($args)	{
     "concat(u.fname,' ',u.lname) as provider_name, " .
     "concat(pd.fname,' ',pd.lname) as patient_name, " .
     "concat(u2.fname, ' ', u2.lname) as owner_name, pd.DOB as patient_dob, " .
-    "a.pc_facility" .
+    "l1.title as room ," .
+    "a.pc_facility " .
     "FROM  ( $table AS a ) " . 
     "LEFT JOIN $cattable AS b ON b.pc_catid = a.pc_catid " .
     "LEFT JOIN users as u ON a.pc_aid = u.id " .
     "LEFT JOIN users as u2 ON a.pc_aid = u2.id " .
+    "LEFT JOIN list_options as l1 ON (a.pc_room = l1.option_id AND l1.list_id = 'room') ".
     "LEFT JOIN patient_data as pd ON a.pc_pid=pd.pid " .
     "WHERE a.pc_eventstatus = $eventstatus " .
     "AND (a.pc_endDate >= '$start' OR a.pc_endDate = '0000-00-00') " .
@@ -793,6 +796,7 @@ function &postcalendar_userapi_pcQueryEventsFA($args)	{
   // return an empty array if we don't have any results
   if(!isset($result)) { return $events; }
 
+  // adding room to tmp array and to events[i] array *ztonia
   for($i=0; !$result->EOF; $result->MoveNext()) {
 
     // get the results from the query
@@ -807,7 +811,8 @@ function &postcalendar_userapi_pcQueryEventsFA($args)	{
          $tmp['sharing'],      $tmp['prefcatid'],     $tmp['catcolor'],
          $tmp['catname'],      $tmp['catdesc'],       $tmp['pid'],
          $tmp['aid'],          $tmp['provider_name'], $tmp['patient_name'],
-         $tmp['owner_name'],   $tmp['patient_dob'],   $tmp['facility'])   = $result->fields;
+         $tmp['owner_name'],   $tmp['patient_dob'],   $tmp['room'], 
+         $tmp['facility'])   = $result->fields;
 
     // grab the name of the topic
     $topicname = pcGetTopicName($tmp['topic']);
@@ -866,6 +871,7 @@ function &postcalendar_userapi_pcQueryEventsFA($args)	{
     $events[$i]['patient_dob'] = $tmp['patient_dob'];
     $events[$i]['patient_age'] = date("Y") - substr(($tmp['patient_dob']),0,4);
     $events[$i]['facility']    = getfacility($tmp['facility']);
+    $events[$i]['room']        = $tmp['room'];
     $events[$i]['sharing']     = $tmp['sharing'];
     $events[$i]['prefcatid']   = $tmp['prefcatid'];
     $events[$i]['aid']         = $tmp['aid'];
@@ -975,6 +981,7 @@ function &postcalendar_userapi_pcQueryEvents($args)
   $cattable   =  $pntable['postcalendar_categories'];
   $topictable =  $pntable['postcalendar_topics'];
 
+  // adding room to sql query *ztonia
   $sql = "SELECT DISTINCT a.pc_eid,  a.pc_informant, a.pc_catid, " .
     "a.pc_title, a.pc_time, a.pc_hometext, a.pc_eventDate, a.pc_duration, " .
     "a.pc_endDate, a.pc_startTime, a.pc_recurrtype, a.pc_recurrfreq, " .
@@ -985,12 +992,15 @@ function &postcalendar_userapi_pcQueryEvents($args)
     "concat(u.fname,' ',u.lname) as provider_name, " .
     "concat(pd.lname,', ',pd.fname) as patient_name, " .
     "concat(u2.fname, ' ', u2.lname) as owner_name, " .
-    "DOB as patient_dob, a.pc_facility, pd.pubpid " .
+    "DOB as patient_dob, a.pc_facility, " .
+    "l1.title as room, "
+    ."pd.pubpid " .
     "FROM  ( $table AS a ) " .
     "LEFT JOIN $cattable AS b ON b.pc_catid = a.pc_catid ".
     "LEFT JOIN users as u ON a.pc_aid = u.id " .
     "LEFT JOIN users as u2 ON a.pc_aid = u2.id " .
     "LEFT JOIN patient_data as pd ON a.pc_pid = pd.pid " .
+    "LEFT JOIN list_options as l1 ON (a.pc_room = l1.option_id AND l1.list_id = 'room') ".
     "WHERE  a.pc_eventstatus = $eventstatus " .
     "AND ((a.pc_endDate >= '$start' AND a.pc_eventDate <= '$end') OR " .
     "(a.pc_endDate = '0000-00-00' AND a.pc_eventDate >= '$start' AND " .
@@ -1074,6 +1084,7 @@ function &postcalendar_userapi_pcQueryEvents($args)
   // return an empty array if we don't have any results
   if(!isset($result)) { return $events; }
 
+  // addition of Room data to tmp array *ztonia
   for($i=0; !$result->EOF; $result->MoveNext()) {
 
     // WHY are we using an array for intermediate storage???  -- Rod
@@ -1091,7 +1102,7 @@ function &postcalendar_userapi_pcQueryEvents($args)
          $tmp['catname'],      $tmp['catdesc'],     $tmp['pid'],
          $tmp['apptstatus'],   $tmp['aid'],         $tmp['provider_name'],
          $tmp['patient_name'], $tmp['owner_name'],  $tmp['patient_dob'],
-         $tmp['facility'],     $tmp['pubpid']) = $result->fields;
+         $tmp['room'],         $tmp['facility'],     $tmp['pubpid']) = $result->fields;
 
     // grab the name of the topic
     $topicname = pcGetTopicName($tmp['topic']);
@@ -1149,6 +1160,8 @@ function &postcalendar_userapi_pcQueryEvents($args)
     $events[$i]['patient_dob'] = $tmp['patient_dob'];
     $events[$i]['patient_age'] = getPatientAge($tmp['patient_dob']);
     $events[$i]['facility']    = getFacility($tmp['facility']);
+    // adding room information *ztonia
+    $events[$i]['room']        = $tmp['room'];
     $events[$i]['sharing']     = $tmp['sharing'];
     $events[$i]['prefcatid']   = $tmp['prefcatid'];
     $events[$i]['aid']         = $tmp['aid'];
