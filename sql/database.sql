@@ -1805,8 +1805,8 @@ CREATE TABLE `insurance_data` (
   `pid` bigint(20) NOT NULL default '0',
   `subscriber_sex` varchar(25) default NULL,
   `accept_assignment` varchar(5) NOT NULL DEFAULT 'TRUE',
-  `total_deductible` varchar(255) DEFAULT NULL,
-  `annual_limit` varchar(255) DEFAULT NULL,
+  `total_deductible` varchar(255) default NULL,
+  `annual_limit` varchar(255) default NULL,
   PRIMARY KEY  (`id`),
   UNIQUE KEY `pid_type_date` (`pid`,`type`,`date`)
 ) ENGINE=MyISAM AUTO_INCREMENT=1 ;
@@ -3081,7 +3081,7 @@ CREATE TABLE `openemr_postcalendar_events` (
   `pc_sendalertsms` VARCHAR(3) NOT NULL DEFAULT 'NO',
   `pc_sendalertemail` VARCHAR( 3 ) NOT NULL DEFAULT 'NO',
   `pc_billing_location` SMALLINT (6) NOT NULL DEFAULT '0',
-  `pc_room` SMALLINT (6) DEFAULT NULL,
+  `pc_room` SMALLINT (6) default NULL,
   PRIMARY KEY  (`pc_eid`),
   KEY `basic_event` (`pc_catid`,`pc_aid`,`pc_eventDate`,`pc_endDate`,`pc_eventstatus`,`pc_sharing`,`pc_topic`)
 ) ENGINE=MyISAM AUTO_INCREMENT=7 ;
