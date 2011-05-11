@@ -502,6 +502,7 @@ foreach ($providers as $provider) {
                         $content .= ")";
                     }
                 }
+                if ($event['room']) $content .= " - " . $event['room'];
                 if ($catid == 1) $content .= "</strike>";
                 $content .= "</a>";
                 $content .= "</span>";
