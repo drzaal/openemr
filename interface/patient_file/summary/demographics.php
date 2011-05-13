@@ -240,6 +240,28 @@ $(document).ready(function(){
     $("#pnotes_ps_expand").load("pnotes_fragment.php");
     $("#disclosures_ps_expand").load("disc_fragment.php");
 
+    <?php if ($GLOBALS['enable_cdr'] && $GLOBALS['enable_cdr_crw']) { ?>
+      top.restoreSession();
+      $("#clinical_reminders_ps_expand").load("clinical_reminders_fragment.php", { 'embeddedScreen' : true }, function() {
+	  // (note need to place javascript code here also to get the dynamic link to work)
+	  $(".medium_modal").fancybox( {
+		  'overlayOpacity' : 0.0,
+		  'showCloseButton' : true,
+		  'frameHeight' : 500,
+		  'frameWidth' : 800,
+		  'centerOnScroll' : false,
+		  'callbackOnClose' : function()  {
+		  refreshme();
+		  }
+	  });
+      });
+    <?php } // end crw?>
+
+    <?php if ($GLOBALS['enable_cdr'] && $GLOBALS['enable_cdr_prw']) { ?>
+      top.restoreSession();
+      $("#patient_reminders_ps_expand").load("patient_reminders_fragment.php");
+    <?php } // end prw?>
+
 <?php if ($vitals_is_registered) { ?>
     // Initialize the Vitals form if it is registered.
     $("#vitals_ps_expand").load("vitals_fragment.php");
@@ -618,7 +640,7 @@ if ( $insurance_count > 0 ) {
 								</tr>
 								<tr>
 								 <td>
-							<?php if ($row['total_deductible'] > 0) { ?>
+									<?php if ($row['total_deductible'] > 0) { ?>
 								  <span class='bold'><?php echo htmlspecialchars(xl('Total Deductible'),ENT_NOQUOTES); ?>: </span>
 								  <span class='text'><?php echo htmlspecialchars($row['total_deductible'],ENT_NOQUOTES); ?></span>
 							 	</td>
@@ -630,6 +652,7 @@ if ( $insurance_count > 0 ) {
 							 	</td>
 								<td>
 							<?php } ?>
+
 							<?php if ($row['copay'] != "") { ?>
 								  <span class='bold'><?php echo htmlspecialchars(xl('CoPay'),ENT_NOQUOTES); ?>: </span>
 								  <span class='text'><?php echo htmlspecialchars($row['copay'],ENT_NOQUOTES); ?></span>
@@ -691,7 +714,27 @@ expand_collapse_widget($widgetTitle, $widgetLabel, $widgetButtonLabel,
                 </div>
 			</td>
 		</tr>
-		 <tr>
+		<?php if ( (acl_check('patients', 'med')) && ($GLOBALS['enable_cdr'] && $GLOBALS['enable_cdr_prw']) ) {
+		echo "<tr><td width='650px'>";
+		// patient reminders collapse widget
+		$widgetTitle = xl("Patient Reminders");
+		$widgetLabel = "patient_reminders";
+		$widgetButtonLabel = xl("Edit");
+		$widgetButtonLink = "../reminder/patient_reminders.php?mode=simple&patient_id=".$pid;
+		$widgetButtonClass = "";
+		$linkMethod = "html";
+		$bodyClass = "notab";
+		$widgetAuth = true;
+		$fixedWidth = true;
+		expand_collapse_widget($widgetTitle, $widgetLabel, $widgetButtonLabel , $widgetButtonLink, $widgetButtonClass, $linkMethod, $bodyClass, $widgetAuth, $fixedWidth); ?>
+		    <br/>
+		    <div style='margin-left:10px' class='text'><image src='../../pic/ajax-loader.gif'/></div><br/>
+		</div>
+			</td>
+		</tr>
+		<?php } //end if prw is activated  ?>
+
+       <tr>
        <td width='650px'>
 <?php
 // disclosures expand collapse widget
@@ -974,6 +1017,23 @@ expand_collapse_widget($widgetTitle, $widgetLabel, $widgetButtonLabel,
 	  "u.id = e.pc_aid AND e.pc_catid = c.pc_catid " .
 	  "ORDER BY e.pc_eventDate, e.pc_startTime";
 	 $res = sqlStatement($query, array($pid) );
+
+	if ( (acl_check('patients', 'med')) && ($GLOBALS['enable_cdr'] && $GLOBALS['enable_cdr_crw']) ) {
+	  // clinical summary expand collapse widget
+	  $widgetTitle = xl("Clinical Reminders");
+	  $widgetLabel = "clinical_reminders";
+	  $widgetButtonLabel = xl("Edit");
+	  $widgetButtonLink = "../reminder/clinical_reminders.php?patient_id=".$pid;;
+	  $widgetButtonClass = "";
+	  $linkMethod = "html";
+	  $bodyClass = "summary_item small";
+	  $widgetAuth = true;
+	  $fixedWidth = false;
+	  expand_collapse_widget($widgetTitle, $widgetLabel, $widgetButtonLabel , $widgetButtonLink, $widgetButtonClass, $linkMethod, $bodyClass, $widgetAuth, $fixedWidth);
+	  echo "<br/>";
+	  echo "<div style='margin-left:10px' class='text'><image src='../../pic/ajax-loader.gif'/></div><br/>";
+	  echo "</div>";
+	} // end if crw
 
 	// appointments expand collapse widget
 	$widgetTitle = xl("Appointments");
