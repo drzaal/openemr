@@ -652,7 +652,7 @@ if ( $insurance_count > 0 ) {
 							 	</td>
 								<td>
 							<?php } ?>
-
+							
 							<?php if ($row['copay'] != "") { ?>
 								  <span class='bold'><?php echo htmlspecialchars(xl('CoPay'),ENT_NOQUOTES); ?>: </span>
 								  <span class='text'><?php echo htmlspecialchars($row['copay'],ENT_NOQUOTES); ?></span>
@@ -714,6 +714,7 @@ expand_collapse_widget($widgetTitle, $widgetLabel, $widgetButtonLabel,
                 </div>
 			</td>
 		</tr>
+		
 		<?php if ( (acl_check('patients', 'med')) && ($GLOBALS['enable_cdr'] && $GLOBALS['enable_cdr_prw']) ) {
 		echo "<tr><td width='650px'>";
 		// patient reminders collapse widget
@@ -735,6 +736,7 @@ expand_collapse_widget($widgetTitle, $widgetLabel, $widgetButtonLabel,
 		<?php } //end if prw is activated  ?>
 
        <tr>
+       
        <td width='650px'>
 <?php
 // disclosures expand collapse widget
@@ -1018,6 +1020,7 @@ expand_collapse_widget($widgetTitle, $widgetLabel, $widgetButtonLabel,
 	  "ORDER BY e.pc_eventDate, e.pc_startTime";
 	 $res = sqlStatement($query, array($pid) );
 
+
 	if ( (acl_check('patients', 'med')) && ($GLOBALS['enable_cdr'] && $GLOBALS['enable_cdr_crw']) ) {
 	  // clinical summary expand collapse widget
 	  $widgetTitle = xl("Clinical Reminders");
@@ -1034,7 +1037,7 @@ expand_collapse_widget($widgetTitle, $widgetLabel, $widgetButtonLabel,
 	  echo "<div style='margin-left:10px' class='text'><image src='../../pic/ajax-loader.gif'/></div><br/>";
 	  echo "</div>";
 	} // end if crw
-
+	
 	// appointments expand collapse widget
 	$widgetTitle = xl("Appointments");
 	$widgetLabel = "appointments";
