@@ -1823,6 +1823,8 @@ CREATE TABLE `insurance_data` (
   `pid` bigint(20) NOT NULL default '0',
   `subscriber_sex` varchar(25) default NULL,
   `accept_assignment` varchar(5) NOT NULL DEFAULT 'TRUE',
+  `total_deductible` varchar(255) default NULL,
+  `annual_limit` varchar(255) default NULL,
   PRIMARY KEY  (`id`),
   UNIQUE KEY `pid_type_date` (`pid`,`type`,`date`)
 ) ENGINE=MyISAM AUTO_INCREMENT=1 ;

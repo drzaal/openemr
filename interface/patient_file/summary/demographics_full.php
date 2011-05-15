@@ -615,10 +615,17 @@ $group_seq=0; // this gives the DIV blocks unique IDs
 				<td><span class=bold><?php xl('Subscriber Phone','e'); ?></span></td>
 				<td class=required>:</td>
 				<td><input type='text' size='20' name='i<?php echo $i?>subscriber_phone' value='<?php echo $result3["subscriber_phone"] ?>' onkeyup='phonekeyup(this,mypcc)' /></td>
-				<td colspan=2><span class=bold><?php xl('CoPay','e'); ?>: <input type=text size="6" name=i<?php echo $i?>copay value="<?php echo $result3{"copay"}?>"></span></td>
+				<td colspan=2></td>
 				<td colspan=2>
 				</td><td></td><td></td>
 			</tr>
+			
+			<tr>
+			  <td colspan=2><span class=bold><?php xl('CoPay','e'); ?>: <input type=text size="6" name=i<?php echo $i?>copay value="<?php echo $result3{"copay"}?>"></	span></td>
+			  <td colspan=2><span class=bold><?php xl('Total Deductible','e'); ?>: <input type=text size="6" name=i<?php echo $i?>total_deductible value="<?php echo $result3{"total_deductible"}?>"></	span></td>
+			  <td colspan=2><span class=bold><?php xl('Annual Limit','e'); ?>: <input type=text size="6" name=i<?php echo $i?>annual_limit value="<?php echo $result3{"annual_limit"}?>"></	span></td>
+			</tr>
+			
 			<tr>
 				<td colspan=0><span class='required'><?php xl('Accept Assignment','e'); ?></span></td>
 				<td class=required>:</td>
