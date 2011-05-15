@@ -1468,6 +1468,7 @@ function &postcalendar_userapi_pcGetEventDetails($eid)
                     c.pc_catname,
                     c.pc_catdesc,
                     e.pc_pid,
+                    e.pc_room,
                     e.pc_aid,
                     pd.pubpid
             FROM   ($table e, $cattable c)
@@ -1489,7 +1490,8 @@ function &postcalendar_userapi_pcGetEventDetails($eid)
          $event['recurrspec'], $event['topic'],       $event['alldayevent'],
          $event['location'],   $event['conttel'],     $event['contname'],
          $event['contemail'],  $event['website'],     $event['fee'], $event['sharing'],
-         $event['catcolor'],   $event['catname'],     $event['catdesc'], $event['pid'], $event['aid'],$event['pubpid']) = $result->fields;
+         $event['catcolor'],   $event['catname'],     $event['catdesc'], $event['pid'],
+         $event['room'], $event['aid'],$event['pubpid']) = $result->fields;
     // there has to be a more intelligent way to do this
     @list($event['duration_hours'],$dmin) = @explode('.',($event['duration']/60/60));
     $event['duration_minutes'] = substr(sprintf('%.2f','.' . 60*($dmin/100)),2,2);

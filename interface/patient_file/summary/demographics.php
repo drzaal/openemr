@@ -318,7 +318,7 @@ $(document).ready(function(){
 <?php
  $result = getPatientData($pid, "*, DATE_FORMAT(DOB,'%Y-%m-%d') as DOB_YMD");
  $result2 = getEmployerData($pid);
- $result3 = getInsuranceData($pid, "primary", "copay, provider, DATE_FORMAT(`date`,'%Y-%m-%d') as effdate");
+ $result3 = getInsuranceData($pid, "primary", "copay, total_deductible, annual_limit, provider, DATE_FORMAT(`date`,'%Y-%m-%d') as effdate");
  $insco_name = "";
 
  if ($result3['provider']) {   // Use provider in case there is an ins record w/ unassigned insco
