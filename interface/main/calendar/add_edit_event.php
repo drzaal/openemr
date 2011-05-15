@@ -69,7 +69,7 @@ function InsertEvent($args) {
                     "pc_catid, pc_multiple, pc_aid, pc_pid, pc_title, pc_time, pc_hometext, " .
                     "pc_informant, pc_eventDate, pc_endDate, pc_duration, pc_recurrtype, " .
                     "pc_recurrspec, pc_startTime, pc_endTime, pc_alldayevent, " .
-                    "pc_apptstatus, pc_prefcatid, pc_location, pc_eventstatus, pc_sharing, pc_facility,pc_billing_location " .
+                    "pc_apptstatus, pc_prefcatid, pc_location, pc_eventstatus, pc_sharing, pc_facility,pc_billing_location,pc_room " .
                     ") VALUES ( " .
                     "'" . $args['form_category']             . "', " .
                     "'" . $args['new_multiple_value']             . "', " .
@@ -92,7 +92,7 @@ function InsertEvent($args) {
                     "'" . $args['locationspec'] ."', "                               .
                     "1, " .
                     "1, " .(int)$args['facility']. ",".(int)$args['billing_facility'].
-                    (int)$args['form_room']." )"
+                    ", '" . $args['form_room']."'" . " )"
                 );
 }
 //================================================================================================================
@@ -455,6 +455,7 @@ if ($_POST['form_action'] == "save") {
                         "pc_prefcatid = '" . $_POST['form_prefcat'] . "' ,"  .
                         "pc_facility = '" .(int)$_POST['facility'] ."' ,"  . // FF stuff
                         "pc_billing_location = '" .(int)$_POST['billing_facility'] ."' "  . 
+                        "pc_room = '" .$_POST['room'] ."' ,"  .
 						"WHERE pc_aid = '$provider' AND pc_multiple={$row['pc_multiple']}");
                 } // foreach
             }
@@ -546,7 +547,8 @@ if ($_POST['form_action'] == "save") {
                     "pc_apptstatus = '" . $_POST['form_apptstatus'] . "', "  .
                     "pc_prefcatid = '" . $_POST['form_prefcat'] . "' ,"  .
                     "pc_facility = '" .(int)$_POST['facility'] ."' ,"  . // FF stuff
-                    "pc_billing_location = '" .(int)$_POST['billing_facility'] ."' "  . 
+                    "pc_billing_location = '" .(int)$_POST['billing_facility'] ."' "  .  
+                    "pc_room = '" .$_POST['room'] ."' ,"  .
 					"WHERE pc_eid = '$eid'");
             }
         }
