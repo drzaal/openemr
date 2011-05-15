@@ -489,6 +489,16 @@ expand_collapse_widget($widgetTitle, $widgetLabel, $widgetButtonLabel,
      htmlspecialchars(xl('Copay'),ENT_NOQUOTES) . ': ' .  htmlspecialchars($result3['copay'],ENT_NOQUOTES) .
      "</span>&nbsp;&nbsp;&nbsp;";
    }
+   if ($result3['total_deductible'] > 0) {
+    echo "<span class='bold'>" .
+     htmlspecialchars(xl('Total Deductible'),ENT_NOQUOTES) . ': ' .  htmlspecialchars($result3['total_deductible'],ENT_NOQUOTES) .
+     "</span>&nbsp;&nbsp;&nbsp;";
+   }
+   if ($result3['annual_limit'] > 0) {
+    echo "<span class='bold'>" .
+     htmlspecialchars(xl('Annual Limit'),ENT_NOQUOTES) . ': ' .  htmlspecialchars($result3['annual_limit'],ENT_NOQUOTES) .
+     "</span>&nbsp;&nbsp;&nbsp;";
+   }
    echo "<span class='bold'>" .
     htmlspecialchars(xl('Effective Date'),ENT_NOQUOTES) . ': ' .  htmlspecialchars(oeFormatShortDate($result3['effdate'],ENT_NOQUOTES)) .
     "</span>";
@@ -690,6 +700,18 @@ if ( $insurance_count > 0 ) {
 								</tr>
 								<tr>
 								 <td>
+								   <?php if ($row['total_deductible'] > 0) { ?>
+								  <span class='bold'><?php echo htmlspecialchars(xl('Total Deductible'),ENT_NOQUOTES); ?>: </span>
+								  <span class='text'><?php echo htmlspecialchars($row['total_deductible'],ENT_NOQUOTES); ?></span>
+							 	</td>
+								<td>
+							<?php } ?>
+							<?php if ($row['annual_limit'] > 0) { ?>
+								  <span class='bold'><?php echo htmlspecialchars(xl('Annual Limit'),ENT_NOQUOTES); ?>: </span>
+								  <span class='text'><?php echo htmlspecialchars($row['annual_limit'],ENT_NOQUOTES); ?></span>
+							 	</td>
+								<td>
+							<?php } ?>
 							<?php if ($row['copay'] != "") { ?>
 								  <span class='bold'><?php echo htmlspecialchars(xl('CoPay'),ENT_NOQUOTES); ?>: </span>
 								  <span class='text'><?php echo htmlspecialchars($row['copay'],ENT_NOQUOTES); ?></span>
