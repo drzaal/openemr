@@ -1102,7 +1102,7 @@ function &postcalendar_userapi_pcQueryEvents($args)
          $tmp['catname'],      $tmp['catdesc'],     $tmp['pid'],
          $tmp['apptstatus'],   $tmp['aid'],         $tmp['provider_name'],
          $tmp['patient_name'], $tmp['owner_name'],  $tmp['patient_dob'],
-         $tmp['room'],         $tmp['facility'],    $tmp['pubpid']) = $result->fields;
+         $tmp['facility'],     $tmp['room'],        $tmp['pubpid']) = $result->fields;
 
     // grab the name of the topic
     $topicname = pcGetTopicName($tmp['topic']);
