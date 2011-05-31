@@ -69,7 +69,7 @@ function InsertEvent($args) {
                     "pc_catid, pc_multiple, pc_aid, pc_pid, pc_title, pc_time, pc_hometext, " .
                     "pc_informant, pc_eventDate, pc_endDate, pc_duration, pc_recurrtype, " .
                     "pc_recurrspec, pc_startTime, pc_endTime, pc_alldayevent, " .
-                    "pc_apptstatus, pc_prefcatid, pc_location, pc_eventstatus, pc_sharing, pc_facility,pc_billing_location,pc_room " .
+                    "pc_apptstatus, pc_prefcatid, pc_location, pc_eventstatus, pc_sharing, pc_facility,pc_billing_location " .
                     ") VALUES ( " .
                     "'" . $args['form_category']             . "', " .
                     "'" . $args['new_multiple_value']             . "', " .
@@ -91,8 +91,8 @@ function InsertEvent($args) {
                     "'" . $args['form_prefcat']              . "', " .
                     "'" . $args['locationspec'] ."', "                               .
                     "1, " .
-                    "1, " .(int)$args['facility']. ",".(int)$args['billing_facility'].
-                    ", '" . $args['form_room']."'" . " )"
+                    "1, " .(int)$args['facility']. ",".(int)$args['billing_facility'] .
+                    " )"
                 );
 }
 //================================================================================================================
@@ -454,8 +454,7 @@ if ($_POST['form_action'] == "save") {
                         "pc_apptstatus = '" . $_POST['form_apptstatus'] . "', "  .
                         "pc_prefcatid = '" . $_POST['form_prefcat'] . "' ,"  .
                         "pc_facility = '" .(int)$_POST['facility'] ."' ,"  . // FF stuff
-                        "pc_billing_location = '" .(int)$_POST['billing_facility'] ."' "  . 
-                        "pc_room = '" .$_POST['room'] ."' ,"  .
+                        "pc_billing_location = '" .(int)$_POST['billing_facility'] ."' "  .
 						"WHERE pc_aid = '$provider' AND pc_multiple={$row['pc_multiple']}");
                 } // foreach
             }
@@ -547,8 +546,7 @@ if ($_POST['form_action'] == "save") {
                     "pc_apptstatus = '" . $_POST['form_apptstatus'] . "', "  .
                     "pc_prefcatid = '" . $_POST['form_prefcat'] . "' ,"  .
                     "pc_facility = '" .(int)$_POST['facility'] ."' ,"  . // FF stuff
-                    "pc_billing_location = '" .(int)$_POST['billing_facility'] ."' "  .  
-                    "pc_room = '" .$_POST['room'] ."' ,"  .
+                    "pc_billing_location = '" .(int)$_POST['billing_facility'] ."' "  .
 					"WHERE pc_eid = '$eid'");
             }
         }
@@ -1173,7 +1171,7 @@ $classpati='';
       //END (CHEMED) IF ?>
       </select>
       </td>
-        <td><?php
+        <td colspan=2><?php
         // ===============================
         // Room scheduling
         //
@@ -1181,8 +1179,8 @@ $classpati='';
         // This will be where I include a dropbox to offer room selection ?>
         <?php
         // Add room information to appointment scheduling and calendar
-          generate_form_field(array('data_type'=>1,'field_id'=>'room','list_id'=>'room',
-            'empty_title'=>'SKIP'), $row['pc_room']);
+        //  generate_form_field(array('data_type'=>1,'field_id'=>'room','list_id'=>'room',
+        //    'empty_title'=>'SKIP'), $row['pc_room']);
         ?>
       </td>
     </tr>
