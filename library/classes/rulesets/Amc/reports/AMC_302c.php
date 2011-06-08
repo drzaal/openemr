@@ -6,10 +6,6 @@
 // as published by the Free Software Foundation; either version 2
 // of the License, or (at your option) any later version.
 //
-//
-// This file contains a function to keep track of which issues
-// types get modified.
-//
 
 
 class AMC_302c extends AbstractAmcReport
@@ -17,6 +13,12 @@ class AMC_302c extends AbstractAmcReport
     public function getTitle()
     {
         return "AMC_302c";
+    }
+
+
+    public function getObjectToCount()
+    {
+        return "patients";
     }
     
     public function createDenominator() 

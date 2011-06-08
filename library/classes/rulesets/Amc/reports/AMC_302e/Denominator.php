@@ -6,10 +6,6 @@
 // as published by the Free Software Foundation; either version 2
 // of the License, or (at your option) any later version.
 //
-//
-// This file contains a function to keep track of which issues
-// types get modified.
-//
 
 class AMC_302e_Denominator implements AmcFilterIF
 {
@@ -18,12 +14,12 @@ class AMC_302e_Denominator implements AmcFilterIF
         return "AMC_302e Denominator";
     }
     
-    public function test( AmcPatient $patient, $dateBegin, $dateEnd ) 
+    public function test( AmcPatient $patient, $beginDate, $endDate ) 
     {
         // Seen by the EP or admitted to the eligible hospitals or CAHs inpatient or emergency department (POS 21 or 23)
-        //  (basically needs an before the end date)
+        //  (basically needs an encounter within the report dates)
         $options = array( Encounter::OPTION_ENCOUNTER_COUNT => 1 );
-        if (Helper::checkAnyEncounter($patient, $dateBegin, $dateEnd, $options )) {
+        if (Helper::checkAnyEncounter($patient, $beginDate, $endDate, $options )) {
             return true;
         }
         else {

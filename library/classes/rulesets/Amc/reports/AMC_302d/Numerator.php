@@ -6,10 +6,6 @@
 // as published by the Free Software Foundation; either version 2
 // of the License, or (at your option) any later version.
 //
-//
-// This file contains a function to keep track of which issues
-// types get modified.
-//
 
 
 class AMC_302d_Numerator implements AmcFilterIF
@@ -19,13 +15,13 @@ class AMC_302d_Numerator implements AmcFilterIF
         return "AMC_302d Numerator";
     }
     
-    public function test( AmcPatient $patient, $dateBegin, $dateEnd ) 
+    public function test( AmcPatient $patient, $beginDate, $endDate ) 
     {
         // Have at least one entry or an indication that no medications are known for the 
         // patient recorded as structured data.
         //  (true if an entry in lists_touch or an active entry in lists preceding the date-end)
-        $firstCheck = sqlQuery("SELECT * FROM `lists_touch` WHERE `pid`=? AND `type`=? AND `date`<=?", array($patient->id,'medication',$dateEnd) );
-        $secondCheck = sqlQuery("SELECT * FROM `lists` WHERE `activity`='1' AND `pid`=? AND `type`=? AND `date`<=?", array($patient->id,'medication',$dateEnd) );
+        $firstCheck = sqlQuery("SELECT * FROM `lists_touch` WHERE `pid`=? AND `type`=? AND `date`<=?", array($patient->id,'medication',$endDate) );
+        $secondCheck = sqlQuery("SELECT * FROM `lists` WHERE `activity`='1' AND `pid`=? AND `type`=? AND `date`<=?", array($patient->id,'medication',$endDate) );
         if ( !(empty($firstCheck)) || !(empty($secondCheck)) ) {
           return true;
         }
