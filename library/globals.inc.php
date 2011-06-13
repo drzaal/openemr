@@ -407,6 +407,13 @@ $GLOBALS_METADATA = array(
       '0',                              // default
       xl('Option to support inventory and sales of products')
     ),
+    
+    'receipts_by_provider' => array(
+      xl('Print Receipts by Provider'),
+      'bool',
+      '0',                              // default
+      xl('Causes Receipts to Print Encounter/Primary Provider Info')
+    ),
 
     'disable_chart_tracker' => array(
       xl('Disable Chart Tracker'),

@@ -744,7 +744,7 @@ function getEncounterTargetFrame( name ) {
   syncRadios();
   var encounter_block = $(parent.Title.document.getElementById('current_encounter_block'));
   var encounter = $(parent.Title.document.getElementById('current_encounter'));
-  var estr = '<a href=\'javascript:;\' onclick="parent.left_nav.loadCurrentEncounterFromTitle()"><b>' + edate + ' (' + eid + ')</b></a>';
+  var estr = '<a href=\'javascript:;\' onclick="parent.left_nav.loadCurrentEncounterFromTitle()"><b>' + edate + '</b></a>';
   encounter.html( estr );
   encounter_block.show();
  }
