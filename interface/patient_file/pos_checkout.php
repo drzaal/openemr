@@ -383,7 +383,7 @@ function generate_receipt($patient_id, $encounter=0) {
 ?>
 <?php
   echo xl("Receipt Generated") . date(' F j, Y');
-  if ($invoice_refno) echo " " . xl("for Invoice") . " $invoice_refno";
+  if ($invoice_refno) echo " " . xl("for Invoice") . " $invoice_refno dated " . $svcdate;
 ?>
 <br>&nbsp;
 </b></p>
