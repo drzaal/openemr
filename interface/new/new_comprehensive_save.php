@@ -106,7 +106,9 @@ newInsuranceData(
   formData('i1copay'),
   formData('form_i1subscriber_sex'),
   $i1date,
-  formData('i1accept_assignment')
+  formData('i1accept_assignment'),
+  formData('i1total_deductible'),
+  formData('i1annual_limit')
 );
 
 
@@ -143,7 +145,9 @@ newInsuranceData(
   formData('i2copay'),
   formData('form_i2subscriber_sex'),
   $i2date,
-  formData('i2accept_assignment')
+  formData('i2accept_assignment'),
+  formData('i2total_deductible'),
+  formData('i2annual_limit')
 );
 
 $i3dob  = fixDate(formData("i3subscriber_DOB"));
@@ -177,7 +181,9 @@ newInsuranceData(
   formData('i3copay'),
   formData('form_i3subscriber_sex'),
   $i3date,
-  formData('i3accept_assignment')
+  formData('i3accept_assignment'),
+  formData('i3total_deductible'),
+  formData('i3annual_limit')
 );
 ?>
 <html>

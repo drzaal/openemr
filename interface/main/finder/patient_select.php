@@ -56,14 +56,15 @@ form {
     overflow: auto;
 }
 
-.srName { width: 12%; }
-.srPhone { width: 11%; }
-.srSS { width: 11%; }
+.srPQuik { width: 6%; }
+.srName { width: 11%; }
+.srPhone { width: 10%; }
+.srSS { width: 9%; }
 .srDOB { width: 8%; }
 .srID { width: 7%; }
 .srPID { width: 7%; }
-.srNumEnc { width: 11%; }
-.srNumDays { width: 11%; }
+.srNumEnc { width: 10%; }
+.srNumDays { width: 10%; }
 .srDateLast { width: 11%; }
 .srDateNext { width: 11%; }
 .srMisc { width: 10%; }
@@ -242,6 +243,7 @@ if ($fend > $count) $fend = $count;
 <div id="searchResultsHeader">
 <table>
 <tr>
+<th class="srPQuik"><?php echo htmlspecialchars( xl('Provider Code'), ENT_NOQUOTES);?></th>
 <th class="srName"><?php echo htmlspecialchars( xl('Name'), ENT_NOQUOTES);?></th>
 <th class="srPhone"><?php echo htmlspecialchars( xl('Phone'), ENT_NOQUOTES);?></th>
 <th class="srSS"><?php echo htmlspecialchars( xl('SS'), ENT_NOQUOTES);?></th>
@@ -299,6 +301,7 @@ else {
 if ($result) {
     foreach ($result as $iter) {
         echo "<tr class='oneresult' id='".htmlspecialchars( $iter['pid'], ENT_QUOTES)."'>";
+        echo  "<td class='srPQuik'>" . htmlspecialchars($iter['provider_quickcode']) . "</td>\n";
         echo  "<td class='srName'>" . htmlspecialchars($iter['lname'] . ", " . $iter['fname']) . "</td>\n";
         //other phone number display setup for tooltip
         $phone_biz = '';
