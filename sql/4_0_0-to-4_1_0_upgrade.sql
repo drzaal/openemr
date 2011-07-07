@@ -1218,3 +1218,46 @@ INSERT INTO `rule_target` ( `id`, `group_id`, `include_flag`, `required_flag`, `
 INSERT INTO `rule_target` ( `id`, `group_id`, `include_flag`, `required_flag`, `method`, `value`, `interval` ) VALUES ('rule_influenza_ge_50', 1, 1, 0, 'target_database', '::immunizations::cvx_code::eq::144::ge::1', 0);
 #EndIf
 
+#IfNotRow enc_category_map rule_enc_id enc_pre_med_ser_40_older
+INSERT INTO `enc_category_map` ( `rule_enc_id`, `main_cat_id` ) VALUES ('enc_pre_med_ser_40_older', 5);
+INSERT INTO `enc_category_map` ( `rule_enc_id`, `main_cat_id` ) VALUES ('enc_pre_med_ser_40_older', 9);
+INSERT INTO `enc_category_map` ( `rule_enc_id`, `main_cat_id` ) VALUES ('enc_pre_med_ser_40_older', 10);
+#EndIf
+
+#IfNotRow enc_category_map rule_enc_id enc_influenza
+INSERT INTO `enc_category_map` ( `rule_enc_id`, `main_cat_id` ) VALUES ('enc_influenza', 5);
+INSERT INTO `enc_category_map` ( `rule_enc_id`, `main_cat_id` ) VALUES ('enc_influenza', 9);
+INSERT INTO `enc_category_map` ( `rule_enc_id`, `main_cat_id` ) VALUES ('enc_influenza', 10);
+#EndIf
+
+#IfNotRow2D list_options list_id rule_enc_types option_id enc_pre_med_ser_40_older
+INSERT INTO `list_options` ( `list_id`, `option_id`, `title`, `seq`, `is_default` ) VALUES ('rule_enc_types' ,'enc_pre_med_ser_40_older', 'encounter preventive medicine 40 and older', 75, 0);
+#EndIf
+
+#IfNotRow2D list_options list_id rule_enc_types option_id enc_influenza
+INSERT INTO `list_options` ( `list_id`, `option_id`, `title`, `seq`, `is_default` ) VALUES ('rule_enc_types' ,'enc_influenza', 'encounter influenza', 150, 0);
+#EndIf
+
+#IfNotRow categories name CCR
+INSERT INTO categories select (select MAX(id) from categories) + 1, 'CCR', '', 1, rght, rght + 1 from categories where name = 'Categories';
+UPDATE categories SET rght = rght + 2 WHERE name = 'Categories';
+UPDATE categories_seq SET id = (select MAX(id) from categories);
+#Endif
+
+#IfNotRow categories name CCD
+INSERT INTO categories select (select MAX(id) from categories) + 1, 'CCD', '', 1, rght, rght + 1 from categories where name = 'Categories';
+UPDATE categories SET rght = rght + 2 WHERE name = 'Categories';
+UPDATE categories_seq SET id = (select MAX(id) from categories);
+#Endif
+
+#IfNotTable patient_access_onsite
+CREATE TABLE `patient_access_onsite`(
+  `id` INT NOT NULL AUTO_INCREMENT ,
+  `pid` INT(11),
+  `portal_username` VARCHAR(100) ,
+  `portal_pwd` VARCHAR(100) ,
+  `portal_pwd_status` TINYINT DEFAULT '1' COMMENT '0=>Password Created Through Demographics by The provider or staff. Patient Should Change it at first time it.1=>Pwd updated or created by patient itself',
+  PRIMARY KEY (`id`)
+)ENGINE=MyISAM AUTO_INCREMENT=1;
+#EndIf
+
