@@ -417,13 +417,17 @@ div.section {
 function set_related(codetype, code, selector, codedesc) {
  var f = document.forms[0];
  var s = f.form_diagnosis.value;
+ var t = f.form_title.value;
  if (code) {
   if (s.length > 0) s += ';';
   s += codetype + ':' + code;
+  if (t.length > 0) t += ' AND ';
+  t += codedesc;
  } else {
   s = '';
  }
  f.form_diagnosis.value = s;
+ f.form_title.value = t;
 }
 
 // This invokes the find-code popup.
