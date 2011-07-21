@@ -33,6 +33,8 @@ function sensitivity_compare($a, $b) {
 $ires = sqlStatement("SELECT id, type, title, begdate FROM lists WHERE " .
   "pid = $pid AND enddate IS NULL " .
   "ORDER BY type, begdate");
+  //if ($encounter) OR DATEDIFF(enddate,'" . $encounter . "') > 0) " .
+  // this may later deserve attention for recording past encounters and resolved problems.
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
@@ -336,6 +338,7 @@ while ($irow = sqlFetchArray($ires)) {
     $perow = sqlQuery("SELECT count(*) AS count FROM issue_encounter WHERE " .
       "pid = '$pid' AND encounter = '$encounter' AND list_id = '$list_id'");
     if ($perow['count']) echo " selected";
+    // else if ($irow['enddate'] == NULL) echo " selected"; // autoselect all problems. Save NBaB some trouble
     echo ">$tcode: " . $irow['begdate'] . " " .
       htmlspecialchars(substr($irow['title'], 0, 40)) . "</option>\n";
   }

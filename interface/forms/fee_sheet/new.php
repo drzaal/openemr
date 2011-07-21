@@ -527,6 +527,27 @@ if ($billresult) {
   foreach ($billresult as $iter) {
     genDiagJS($iter["code_type"], trim($iter["code"]));
   }
+} 
+else if (! $_POST['bill']) { // an empty fee sheet will try to pull in all of the encounter issues.
+  
+  $ires = sqlStatement("SELECT b.pid, b.list_id, b.encounter, a.id, a.diagnosis " .
+    "AS diagnosis FROM issue_encounter AS b " .
+    "RIGHT JOIN lists AS a ON a.id=b.list_id " .
+    "WHERE b.pid='$pid' AND b.encounter='$encounter' " .
+    "ORDER BY a.begdate DESC");
+   
+  while ($irow = sqlFetchArray($ires)) {
+  	for ($icnt=0, $idiag = explode(';', $irow['diagnosis']); $icnt < count($idiag); $icnt += 1){
+  	
+  	  $encissue = explode( ':', $idiag[$icnt] ); //$irow['diagnosis'] );
+      $encissue_codetype = $encissue[0];
+      $encissue_code = $encissue[1];
+    
+      if ($_POST['newcodes']) $_POST['newcodes'] .= '~' . $encissue_codetype . '|' . trim($encissue_code) . '|';
+      else $_POST['newcodes'] = $encissue_codetype . '|' . trim($encissue_code) . '|';
+  	}
+  }	
+  
 }
 if ($_POST['bill']) {
   foreach ($_POST['bill'] as $iter) {

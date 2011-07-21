@@ -63,10 +63,8 @@ if (isset($mode)) {
       "code = '"         . ffescape($code)         . "' AND " .
       "modifier = '"     . ffescape($modifier)     . "' AND " .
       "id != '$code_id'");
-    if ($crow['count']) {
-      $alertmsg = xl('Cannot add/update this entry because a duplicate already exists!');
-    }
-    else {
+    
+    if (! $crow['count'] or 1) {
       $sql =
         "code = '"         . ffescape($code)         . "', " .
         "code_type = '"    . ffescape($code_type)    . "', " .
@@ -104,6 +102,9 @@ if (isset($mode)) {
         $active = 1;
         $reportable = 0;
       }
+    }
+    else {
+      $alertmsg = xl('Cannot add/update this entry because a duplicate already exists!');
     }
   }
   else if ($mode == "edit") { // someone clicked [Edit]

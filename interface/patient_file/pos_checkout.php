@@ -566,7 +566,8 @@ function write_form_line($code_type, $code, $id, $date, $description,
   if (empty($units)) $units = 1;
   $price = $amount / $units; // should be even cents, but ok here if not
   if ($code_type == 'COPAY' && !$description) $description = xl('Payment');
-  echo " <tr>\n";
+  echo " <tr id='line_" . $lino . 
+    "'>\n";
   echo "  <td>" . oeFormatShortDate($date);
   echo "<input type='hidden' name='line[$lino][code_type]' value='$code_type'>";
   echo "<input type='hidden' name='line[$lino][code]' value='$code'>";
@@ -907,9 +908,17 @@ while ($urow = sqlFetchArray($ures)) {
    if (! f[pfx + '[code_type]']) break;
    if (f[pfx + '[code_type]'].value != 'TAX') continue;
    if (f[pfx + '[code]'].value != rateid) continue;
-   var tax = amount * parseFloat(f[pfx + '[taxrates]'].value);
-   tax = parseFloat(tax.toFixed(<?php echo $currdecimals ?>));
-   var cumtax = parseFloat(f[pfx + '[price]'].value) + tax;
+   if (f['form_toggletax' + rateid].checked){
+     var tax = amount * parseFloat(f[pfx + '[taxrates]'].value);
+     tax = parseFloat(tax.toFixed(<?php echo $currdecimals ?>));
+     var cumtax = parseFloat(f[pfx + '[price]'].value) + tax;
+     $("#" + 'line_' + lino).css("display", '');
+   }
+   else {
+   	var tax = 0;
+   	var cumtax = parseFloat(0);
+   	$("#" + 'line_' + lino).css("display", 'none');
+   }
    f[pfx + '[price]'].value  = cumtax.toFixed(<?php echo $currdecimals ?>); // requires JS 1.5
    if (visible) f[pfx + '[amount]'].value = cumtax.toFixed(<?php echo $currdecimals ?>); // requires JS 1.5
    if (isNaN(tax)) alert('Tax rate not numeric at line ' + lino);
@@ -1093,6 +1102,22 @@ if ($inv_encounter) {
 
 <p>
 <table border='0' cellspacing='4'>
+
+   <?php 
+   // Write a checkbox for each tax that has money, allow control over which taxes active.
+   $tax_checkboxes = '';
+   foreach ($taxes as $key => $value) {
+     if ($value[2]) {
+       $tax_checkboxes == '' ? $tax_checkboxes = '<tr>' : -1;
+       $tax_checkboxes .= "<td>" . $value[0] . 
+         " <input type='checkbox' name='form_toggletax" . $key .
+         "' value='true' style='' onclick='computeTotals()'></td>";
+       //write_form_line('TAX', $key, $key, date('Y-m-d'), $value[0], 0, 1, $value[1]);
+     }
+   }
+   $tax_checkboxes != '' ? $tax_checkboxes .= '</tr>' : -1;
+   echo $tax_checkboxes;
+   ?>
 
  <tr>
   <td>
