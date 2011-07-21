@@ -407,13 +407,6 @@ $GLOBALS_METADATA = array(
       '0',                              // default
       xl('Option to support inventory and sales of products')
     ),
-    
-    'receipts_by_provider' => array(
-      xl('Print Receipts by Provider'),
-      'bool',
-      '0',                              // default
-      xl('Causes Receipts to Print Encounter/Primary Provider Info')
-    ),
 
     'disable_chart_tracker' => array(
       xl('Disable Chart Tracker'),
@@ -560,6 +553,13 @@ $GLOBALS_METADATA = array(
       'bool',                           // data type
       '1',                              // default = true
       xl('This will deactivate document the encryption and decryption features, and hide them in the UI.')
+    ),
+
+    'use_custom_immun_list' => array(
+      xl('Use Custom Immunization List'),
+      'bool',                           // data type
+      '0',                              // default = true
+      xl('This will use the custom immunizations list rather than the standard CVX immunization list.')
     ),
 
   ),
@@ -871,6 +871,13 @@ $GLOBALS_METADATA = array(
       xl('Enable Patient Reminder Widget')
     ),
 
+    'enable_cqm' => array(
+      xl('Enable CQM Reporting'),
+      'bool',                           // data type
+      '1',                               // default
+      xl('Enable Clinical Quality Measure (CQM) Reporting')
+    ),
+
     'pqri_registry_name' => array(
       xl('PQRI Registry Name'),
       'text',                           // data type
@@ -884,7 +891,28 @@ $GLOBALS_METADATA = array(
       '125789123',                               // default
       xl('PQRI Registry ID')
     ),
-      
+
+    'enable_amc' => array(
+      xl('Enable AMC Reporting'),
+      'bool',                           // data type
+      '1',                               // default
+      xl('Enable Automated Measure Calculations (AMC) Reporting')
+    ),
+
+    'enable_amc_prompting' => array(
+      xl('Enable AMC Prompting'),
+      'bool',                           // data type
+      '1',                               // default
+      xl('Enable Prompting For Automated Measure Calculations (AMC) Required Data')
+    ),
+
+    'enable_amc_tracking' => array(
+      xl('Enable AMC Tracking'),
+      'bool',                           // data type
+      '1',                               // default
+      xl('Enable Reporting of Tracking Date For Automated Measure Calculations (AMC)')
+    ),
+ 
   ),
 
   // Logging
