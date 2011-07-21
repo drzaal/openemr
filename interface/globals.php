@@ -276,6 +276,7 @@ else {
   $GLOBALS['phone_country_code'] = '1';
   $GLOBALS['disable_non_default_groups'] = true;
   $GLOBALS['ippf_specific'] = false;
+  $GLOBALS['receipts_by_provider'] = true;
 }
 
 // If >0 this will enforce a separate PHP session for each top-level
