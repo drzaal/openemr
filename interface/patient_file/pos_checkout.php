@@ -612,9 +612,10 @@ function printFacilityHeader($frow){
 // Pring receipt header for Provider
 function printProviderHeader($pvdrow){
 	echo "<p><b>" . $pvdrow['title'] . " " . $pvdrow['fname'] . " " . $pvdrow['mname'] . " " . $pvdrow['lname'] . " " . 
+	"<br>" . $pvdrow['specialty'] .
     "<br>" . $pvdrow['street'] .
     "<br>" . $pvdrow['city'] . ', ' . $pvdrow['state'] . ' ' . $pvdrow['postal_code'] .
-    "<br>" . $pvdrow['phone'] .
+    "<br>" . $pvdrow['phonew1'] ? $pvdrow['phonew1'] : $pvdrow['phone'] .
     "<br>&nbsp" .
     "<br>";
 }
