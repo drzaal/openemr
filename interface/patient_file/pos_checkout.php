@@ -305,8 +305,8 @@ function generate_receipt($patient_id, $encounter=0) {
     }
     
     if ($encprovider){
-    	$providerrow = sqlQuery("SELECT fname, mname, lname, title, street, streetb," . 
-    	" city, state, zip, phone, fax FROM users WHERE id = $encprovider");
+    	$providerrow = sqlQuery("SELECT fname, mname, lname, title, specialty, street, streetb," . 
+    	" city, state, zip, phone, phonew1, fax FROM users WHERE id = $encprovider");
     }
   }
   else {
@@ -611,11 +611,13 @@ function printFacilityHeader($frow){
 
 // Pring receipt header for Provider
 function printProviderHeader($pvdrow){
-	echo "<p><b>" . $pvdrow['title'] . " " . $pvdrow['fname'] . " " . $pvdrow['mname'] . " " . $pvdrow['lname'] . " " . 
+	echo "<p><b>" . $pvdrow['title'] . " " . $pvdrow['fname'] . " " . 
+	( $pvdrow['mname'] ? $pvdrow['mname'] . " " : "" ) . $pvdrow['lname'] . " " . 
 	"<br>" . $pvdrow['specialty'] .
     "<br>" . $pvdrow['street'] .
-    "<br>" . $pvdrow['city'] . ', ' . $pvdrow['state'] . ' ' . $pvdrow['postal_code'] .
-    "<br>" . $pvdrow['phonew1'] ? $pvdrow['phonew1'] : $pvdrow['phone'] .
+    "<br>" . $pvdrow['city'] . ', ' . $pvdrow['state'] . ' ' . $pvdrow['zip'] .
+    "<br>" . ( strlen($pvdrow['phonew1'] ) ? $pvdrow['phonew1'] : $pvdrow['phone'] ) .
+    "<br>Tax ID: " . $pvdrow['federaltaxid'] .
     "<br>&nbsp" .
     "<br>";
 }
