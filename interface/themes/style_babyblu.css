@@ -881,30 +881,30 @@ font-size:9pt;
 
 #navigation-slide li a.collapsed{
     background: #999; /* for non-css3 browsers */
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#61a0ff', endColorstr='#b5cbff'); /* for IE */
-    background: -webkit-gradient(linear, left top, left bottom, from(#61a0ff), to(#b5cbff)); /* for webkit browsers */
-    background: -moz-linear-gradient(top,  #61a0ff,  #b5cbff); /* for firefox 3.6+ */
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#BCF', endColorstr='#BCF'); /* for IE */
+    background: -webkit-gradient(linear, left top, left bottom, from(#BCF), to(#BCF)); /* for webkit browsers */
+    background: -moz-linear-gradient(top,  #BCF,  #BCF); /* for firefox 3.6+ */
 }
 
 #navigation-slide li a.expanded{
     background: #999; /* for non-css3 browsers */
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#b5cbff', endColorstr='#61a0ff'); /* for IE */
-    background: -webkit-gradient(linear, left top, left bottom, from(#b5cbff), to(#61a0ff)); /* for webkit browsers */
-    background: -moz-linear-gradient(top,  #b5cbff,  #61a0ff); /* for firefox 3.6+ */
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#BCF', endColorstr='#BCF'); /* for IE */
+    background: -webkit-gradient(linear, left top, left bottom, from(#BCF), to(#BCF)); /* for webkit browsers */
+    background: -moz-linear-gradient(top,  #BCF,  #BCF); /* for firefox 3.6+ */
 }
 
 #navigation-slide ul li a.collapsed_lv2{
     background: #999; /* for non-css3 browsers */
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#7870de', endColorstr='#e7e6f9'); /* for IE */
-    background: -webkit-gradient(linear, left top, left bottom, from(#7870de), to(#e7e6f9)); /* for webkit browsers */
-    background: -moz-linear-gradient(top,  #7870de,  #e7e6f9); /* for firefox 3.6+ */
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#A79BE7', endColorstr='#A79BE7'); /* for IE */
+    background: -webkit-gradient(linear, left top, left bottom, from(#A79BE7), to(#A79BE7)); /* for webkit browsers */
+    background: -moz-linear-gradient(top,  #A79BE7,  #A79BE7); /* for firefox 3.6+ */
 }
 
 #navigation-slide ul li a.expanded_lv2{
     background: #999; /* for non-css3 browsers */
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#e7e6f9', endColorstr='#7870de'); /* for IE */
-    background: -webkit-gradient(linear, left top, left bottom, from(#e7e6f9), to(#7870de)); /* for webkit browsers */
-    background: -moz-linear-gradient(top,  #e7e6f9,  #7870de); /* for firefox 3.6+ */
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#A79BE7', endColorstr='#A79BE7'); /* for IE */
+    background: -webkit-gradient(linear, left top, left bottom, from(#A79BE7), to(#A79BE7)); /* for webkit browsers */
+    background: -moz-linear-gradient(top,  #A79BE7,  #A79BE7); /* for firefox 3.6+ */
 }
 
 #sddm li
@@ -914,9 +914,9 @@ font-size:9pt;
         float:left;
         border: 1px solid #EAE6FF;
         background: #999; /* for non-css3 browsers */
-        filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#61a0ff', endColorstr='#b5cbff'); /* for IE */
-        background: -webkit-gradient(linear, left top, left bottom, from(#61a0ff), to(#b5cbff)); /* for webkit browsers */
-        background: -moz-linear-gradient(top,  #61a0ff,  #b5cbff); /* for firefox 3.6+ */
+        filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#BCF', endColorstr='#BCF'); /* for IE */
+        background: -webkit-gradient(linear, left top, left bottom, from(#BCF), to(#BCF)); /* for webkit browsers */
+        background: -moz-linear-gradient(top,  #BCF,  #BCF); /* for firefox 3.6+ */
 }
 
 #sddm li a
