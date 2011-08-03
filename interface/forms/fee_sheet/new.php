@@ -72,12 +72,23 @@ function contraceptionClass($code_type, $code) {
   return $contra;
 }
 
+
+// I am proposing that this function be changed to accept an array parameter
+// to allow some measure of flexibility in terms of which terms are required to be passed in
+function echoLine($lino, $codetype, $code, $codeData) {
+	$modifier=''; $ndc_info=''; $auth = TRUE; $del = FALSE; 
+	$units = NULL; $fee = NULL; $id = NULL; $billed = FALSE;
+	$code_text = NULL; $justify = NULL; $provider_id = 0;
+	
+	foreach($codeData as $key=>$value) { $$key = $value; }
+
 // This writes a billing line item to the output page.
-//
+/*
 function echoLine($lino, $codetype, $code, $modifier, $ndc_info='',
   $auth = TRUE, $del = FALSE, $units = NULL, $fee = NULL, $id = NULL,
   $billed = FALSE, $code_text = NULL, $justify = NULL, $provider_id = 0)
 {
+*/
   global $code_types, $ndc_applies, $ndc_uom_choices, $justinit, $pid;
   global $contraception, $usbillstyle;
 
@@ -857,6 +868,14 @@ $justinit = "var f = document.forms[0];\n";
 
 // $encounter_provid = -1;
 
+$tmp = sqlQuery("SELECT a.provider_id AS enc_provider_id, a.supervisor_id AS supervisor_id, " .
+  "b.providerID AS prim_provider_id FROM form_encounter AS a, patient_data AS b " .
+  "WHERE a.pid = '$pid' AND a.pid = b.pid AND a.encounter = '$encounter' " .
+  "ORDER BY a.id DESC LIMIT 1");
+   
+$encounter_provid = 0 + ( isset($_POST['ProviderID']) ? $_POST['ProviderID'] : ( $tmp['enc_provider_id'] ? $tmp['enc_provider_id'] : $tmp['prim_provider_id'] ) );
+$encounter_supid  = 0 + $tmp['supervisor_id'];
+
 // Generate lines for items already in the billing table for this encounter,
 // and also set the rendering provider if we come across one.
 //
@@ -892,10 +911,18 @@ if ($billresult) {
     }
 
     // list($code, $modifier) = explode("-", $iter["code"]);
+    
+    echoLine($bill_lino, $iter["code_type"], trim($iter["code"]), 
+      array("modifier" => $modifier, "ndc_info" => $ncd_info, "auth" => $authorized, 
+      "del" => $del, "units" => $units, "fee" => $fee, "id" => $iter["id"],
+      "billed" => $iter["billed"], "code_text" => $iter["code_text"], "justify" => $justify, 
+      "provider_id" => $provider_id) );
+/*
     echoLine($bill_lino, $iter["code_type"], trim($iter["code"]),
       $modifier, $ndc_info,  $authorized,
       $del, $units, $fee, $iter["id"], $iter["billed"],
       $iter["code_text"], $justify, $provider_id);
+*/
   }
 }
 
@@ -915,9 +942,17 @@ if ($_POST['bill']) {
     $units = max(1, intval(trim($iter['units'])));
     $fee = sprintf('%01.2f',(0 + trim($iter['price'])) * $units);
     if ($iter['code_type'] == 'COPAY' && $fee > 0) $fee = 0 - $fee;
+    
+    echoLine(++$bill_lino, $iter["code_type"], $iter["code"], 
+      array("modifier" => trim($iter["mod"]), "ndc_info" => $ncd_info,
+      "auth" => $iter["auth"], "del" => $iter["del"], "units" => $units, "fee" => $fee, "id" => NULL,
+      "billed" => FALSE, "code_text" => NULL, "justify" => $iter["justify"], 
+      "provider_id" => 0 + $iter['provid'] ) );
+/*
     echoLine(++$bill_lino, $iter["code_type"], $iter["code"], trim($iter["mod"]),
       $ndc_info, $iter["auth"], $iter["del"], $units,
       $fee, NULL, FALSE, NULL, $iter["justify"], 0 + $iter['provid']);
+*/
   }
 }
 
@@ -975,8 +1010,14 @@ if ($_POST['newcodes']) {
       $tmp = sqlQuery("SELECT copay FROM insurance_data WHERE pid = '$pid' " .
         "AND type = 'primary' ORDER BY date DESC LIMIT 1");
       $code = sprintf('%01.2f', 0 + $tmp['copay']);
+      
+      echoLine(++$bill_lino, $newtype, $code, 
+        array("auth" => '1', "del" => '0', "units" => '1', 
+        "fee" => sprintf('%01.2f', 0 - $code) ) );
+/*
       echoLine(++$bill_lino, $newtype, $code, '', '', '1', '0', '1',
         sprintf('%01.2f', 0 - $code));
+*/
     }
     else if ($newtype == 'PROD') {
       $result = sqlQuery("SELECT * FROM drug_templates WHERE " .
@@ -1002,16 +1043,16 @@ if ($_POST['newcodes']) {
           "ORDER BY date DESC LIMIT 1");
         if (!empty($tmp)) $ndc_info = $tmp['ndc_info'];
       }
-      echoLine(++$bill_lino, $newtype, $code, trim($modifier), $ndc_info);
+      
+      echoLine(++$bill_lino, $newtype, $code, 
+        array("modifier" => trim($modifier), "ndc_info" => $ncd_info,
+        "provider_id" => 0 + (isset($_POST['ProviderID']) ? $_POST['ProviderID'] : $encounter_provid) ) );
+        
+      // echoLine(++$bill_lino, $newtype, $code, trim($modifier), $ndc_info);
     }
   }
 }
 
-$tmp = sqlQuery("SELECT provider_id, supervisor_id FROM form_encounter " .
-  "WHERE pid = '$pid' AND encounter = '$encounter' " .
-  "ORDER BY id DESC LIMIT 1");
-$encounter_provid = 0 + $tmp['provider_id'];
-$encounter_supid  = 0 + $tmp['supervisor_id'];
 ?>
 </table>
 </p>
