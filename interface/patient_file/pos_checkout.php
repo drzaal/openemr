@@ -739,7 +739,7 @@ if ($_POST['form_save']) {
       // table entry and so we do not call updateClaim().  Note we should not
       // eliminate billed and bill_date from the billing table!
       $query = "UPDATE billing SET fee = '$amount', billed = 1, " .
-      "bill_date = NOW() WHERE id = '$id'";
+      "bill_date = '$dosdate' WHERE id = '$id'";
       sqlQuery($query);
     }
   }

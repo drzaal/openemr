@@ -15,6 +15,24 @@ require_once("../../drugs/drugs.inc.php");
 require_once("$srcdir/formatting.inc.php");
 require_once("$srcdir/options.inc.php");
 
+
+$months = array("01","02","03","04","05","06","07","08","09","10","11","12");
+$days = array("01","02","03","04","05","06","07","08","09","10","11","12","13","14",
+  "15","16","17","18","19","20","21","22","23","24","25","26","27","28","29","30","31");
+$thisyear = date("Y");
+$years = array($thisyear-1, $thisyear, $thisyear+1, $thisyear+2);
+?>
+
+<!-- pop up calendar -->
+<style type="text/css">@import url(<?php echo $GLOBALS['webroot'] ?>/library/dynarch_calendar.css);</style>
+<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/dynarch_calendar.js"></script>
+<?php include_once("{$GLOBALS['srcdir']}/dynarch_calendar_en.inc.php"); ?>
+<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/dynarch_calendar_setup.js"></script>
+<?php include_once("{$GLOBALS['srcdir']}/ajax/facility_ajax_jav.inc.php"); ?>
+
+<script type="text/javascript" src="<?php echo $GLOBALS['webroot'] ?>/library/textformat.js"></script>
+
+<?php
 // Some table cells will not be displayed unless insurance billing is used.
 $usbillstyle = $GLOBALS['ippf_specific'] ? " style='display:none'" : "";
 
@@ -383,6 +401,8 @@ $visit_date = substr($visit_row['date'], 0, 10);
 if ($_POST['bn_save']) {
   $main_provid = 0 + $_POST['ProviderID'];
   $main_supid  = 0 + $_POST['SupervisorID'];
+  $bill_date = DateTime::createFromFormat('Y-m-d', $_POST['bill_date']);
+  
   if ($main_supid == $main_provid) $main_supid = 0;
   $default_warehouse = $_POST['default_warehouse'];
 
@@ -430,8 +450,8 @@ if ($_POST['bn_save']) {
         // authorizeBilling($id, $auth);
         sqlQuery("UPDATE billing SET code = '$code', " .
           "units = '$units', fee = '$fee', modifier = '$modifier', " .
-          "authorized = $auth, provider_id = '$provid', " .
-          "ndc_info = '$ndc_info', justify = '$justify' WHERE " .
+          "authorized = $auth, provider_id = '$provid', date = '" . $bill_date->format('Y-m-d H:i:s') .
+          "', ndc_info = '$ndc_info', justify = '$justify' WHERE " .
           "id = '$id' AND billed = 0 AND activity = 1");
       }
     }
@@ -439,8 +459,18 @@ if ($_POST['bn_save']) {
     // Otherwise it's a new item...
     else if (! $del) {
       $code_text = addslashes($codesrow['code_text']);
-      addBilling($encounter, $code_type, $code, $code_text, $pid, $auth,
-        $provid, $modifier, $units, $fee, $ndc_info, $justify);
+      
+      // ugly ugly, I made sure that this records the feesheet date instead of 'today'
+      $sql = "insert into billing (date, encounter, code_type, code, code_text, " .
+        "pid, authorized, user, groupname, activity, billed, provider_id, " .
+        "modifier, units, fee, ndc_info, justify) values ('" . $bill_date->format('Y-m-d H:i:s') . 
+        "', '$encounter', '$code_type', '$code', '$code_text', '$pid', " .
+        "'$auth', '" . $_SESSION['authId'] . "', '" .
+        $_SESSION['authProvider'] . "', 1, 0, $provid, '$modifier', '$units', " .
+        "'$fee', '$ndc_info', '$justify')";
+      sqlInsert($sql);
+      //addBilling($encounter, $code_type, $code, $code_text, $pid, $auth,
+      //  $provid, $modifier, $units, $fee, $ndc_info, $justify);
     }
   } // end for
 
@@ -1072,7 +1102,10 @@ if (!$GLOBALS['ippf_specific']) {
   echo "&nbsp;&nbsp;" . xl('Supervising') . "\n";
   genProviderSelect('SupervisorID', '-- N/A --', $encounter_supid, $isBilled);
 }
+?>
 
+
+<?php
 echo "</b></span>\n";
 ?>
 
@@ -1119,7 +1152,7 @@ if ($prod_lino > 0) { // if any products are in this form
       $trow['default_warehouse'], '');
     echo "&nbsp; &nbsp; &nbsp;\n";
   }
-}
+}       
 
 // Allow the patient price level to be fixed here.
 $plres = sqlStatement("SELECT option_id, title FROM list_options " .
@@ -1141,6 +1174,21 @@ if (true) {
   }
   echo "   </select>\n";
 }
+
+echo "&nbsp; &nbsp";
+
+// Allow the billing date to be fixed here
+echo "<span class='billcell'><b>Date of Service: </b><input type='text' size='10' " .
+       "name='bill_date' id='bill_date' " . $disabled .
+       " value='" . ($visit_date ? $visit_date : date('Y-m-d') ) . 
+       "' title='" . 
+       xl('yyyy-mm-dd Date of service') . 
+       "' onkeyup='datekeyup(this,mypcc)' onblur='dateblur(this,mypcc)' />" .
+       "<img src='../../pic/show_calendar.gif' align='absbottom' width='24' height='22' " .
+       "id='img_form_date' border='0' alt='[?]' style='cursor:pointer;cursor:hand' " .
+       "title='" . 
+       xl('Click here to choose a date') . 
+       "'></span>";
 ?>
 
 &nbsp; &nbsp; &nbsp;
@@ -1171,6 +1219,10 @@ if (true) {
 ?>
 
 <script language='JavaScript'>
+/* required for popup calendar */
+var mypcc = '<?php echo $GLOBALS['phone_country_code'] ?>';
+Calendar.setup({inputField:"bill_date", ifFormat:"%Y-%m-%d", button:"img_form_date"});
+
 <?php echo $justinit; ?>
 </script>
 
